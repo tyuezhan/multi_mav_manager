@@ -53,15 +53,24 @@ tmux setw -g mouse on
 
 tmux rename-window -t $SESSION_NAME "Main"
 tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; roscore" Enter
-#tmux split-window -t $SESSION_NAME
-#tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; export DISPLAY=:0; rosrun rviz rviz -d ${RVIZ_CONFIG_FILE}" Enter
 tmux split-window -t $SESSION_NAME
-tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; export DISPLAY=:0; rqt --standalone ${RQT_GUI}" Enter
+tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; export DISPLAY=:1; rosrun rviz rviz -d ${RVIZ_CONFIG_FILE}" Enter
+# tmux split-window -t $SESSION_NAME
+# tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; export DISPLAY=:1; rqt --standalone ${RQT_GUI}" Enter
 tmux split-window -t $SESSION_NAME
 tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; roslaunch kr_multi_mav_manager dragonfly_manager.launch odom_topic:=odom_tag config_path:=$HOME/.ros/" Enter
 tmux split-window -t $SESSION_NAME
 tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; roslaunch kr_multi_mav_manager multi_dragonfly_gs.launch" Enter
 tmux select-layout -t $SESSION_NAME tiled
+
+tmux new-window -t $SESSION_NAME -n "Manager"
+tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 3; rosparam set robot_name dragonfly25; rosrun rqt_mav_manager rqt_mav_manager" Enter
+tmux split-window -t $SESSION_NAME
+tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 4; rosparam set robot_name dragonfly26; rosrun rqt_mav_manager rqt_mav_manager" Enter
+tmux split-window -t $SESSION_NAME
+tmux send-keys -t $SESSION_NAME "$SETUP_ROS_STRING; sleep 5; rosparam set robot_name dragonfly27; rosrun rqt_mav_manager rqt_mav_manager" Enter
+tmux split-window -t $SESSION_NAME
+
 
 # Add window to easily kill all processes
 tmux new-window -t $SESSION_NAME -n "Kill"
